@@ -1,0 +1,11 @@
+StartWorkoutIntent start my workout
+StartWorkoutIntent begin my workout
+StartWorkoutIntent start workout
+StartWorkoutIntent begin workout
+
+IncrementRepsIntent {rep_count}
+IncrementRepsIntent {rep_count} ma'am
+
+JustYesIntent yes
+
+YesMaamIntent yes ma'am

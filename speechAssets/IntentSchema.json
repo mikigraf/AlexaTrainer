@@ -1,0 +1,34 @@
+{
+  "intents": [
+    {
+      "intent": "StartWorkoutIntent"
+    },
+    {
+      "intent": "JustYesIntent"
+    },
+    {
+      "intent": "YesMaamIntent"
+    },
+    {
+      "intent": "IncrementRepsIntent",
+      "slots": [
+        {
+          "name": "rep_count",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.NoIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}
