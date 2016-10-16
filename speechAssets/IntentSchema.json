@@ -16,7 +16,7 @@
       "intent": "ReallyNoIntent"
     },
     {
-      "intent": "GetNameIntent",
+      "intent": "SayNameIntent",
       "slots": [
         {
           "name": "first_name",

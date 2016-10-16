@@ -25,6 +25,6 @@ ReallyNoIntent really no
 ReallyNoIntent no I really can't
 ReallyNoIntent no really I can't
 
-GetNameIntent {first_name}
-GetNameIntent It's {first_name}
-GetNameIntent My name is {first_name}
+SayNameIntent {first_name}
+SayNameIntent It's {first_name}
+SayNameIntent My name is {first_name}
