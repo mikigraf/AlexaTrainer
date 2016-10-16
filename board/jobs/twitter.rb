@@ -12,7 +12,7 @@ end
 
 search_term = URI::encode('#alexajacobshack')
 
-SCHEDULER.every '2m', :first_in => 0 do |job|
+SCHEDULER.every '1m', :first_in => 0 do |job|
   begin
     tweets = twitter.search("#{search_term}")
 
