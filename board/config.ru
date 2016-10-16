@@ -1,4 +1,16 @@
 require 'dashing'
+require "json"
+
+$pushUps = 0
+
+post "/test" do
+  $data = request.body.read
+  puts "Data is: #{$data}"
+  $date = JSON.parse($data)["date"]
+  puts "Date is: #{$date}"
+  $pushUps = JSON.parse($data)["pushUps"]
+end
+
 
 configure do
   set :auth_token, 'YOUR_AUTH_TOKEN'
