@@ -7,5 +7,24 @@ IncrementRepsIntent {rep_count}
 IncrementRepsIntent {rep_count} ma'am
 
 JustYesIntent yes
+JustYesIntent okay I will
+JustYesIntent okay 
+JustYesIntent fine
+JustYesIntent okay fine
 
 YesMaamIntent yes ma'am
+
+StopExerciseIntent stop
+StopExerciseIntent I can't do any more
+StopExerciseIntent I can't take it anymore
+StopExerciseIntent I'm too tired
+StopExerciseIntent I'm so tired
+StopExerciseIntent I give up
+
+ReallyNoIntent really no
+ReallyNoIntent no I really can't
+ReallyNoIntent no really I can't
+
+GetNameIntent {first_name}
+GetNameIntent It's {first_name}
+GetNameIntent My name is {first_name}
