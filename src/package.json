@@ -4,7 +4,8 @@
   "description": "Alexa feat. DJ Khaled. Project for jacobsHack! 2016.",
   "main": "index.js",
   "dependencies": {
-    "alexa-sdk": "^1.0.6"
+    "alexa-sdk": "^1.0.6",
+    "rethinkdb": "^2.3.3"
   },
   "devDependencies": {},
   "scripts": {
