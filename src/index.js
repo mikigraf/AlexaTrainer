@@ -29,16 +29,16 @@ var newSessionHandlers = {
         this.attributes['exercisesDone'] = 0;
         this.attributes['totalExercisesDone'] = ''; // weirdly hacked tgt string of all exercise counts e.g. "P9S2B4"
         if(Object.keys(this.attributes).length === 0) { // Check if it's the first time the skill has been invoked
-            this.emit('GetName');
+            this.emit('GetNameIntent');
         }
         this.handler.state = states.STARTMODE; // Transition to STARTMODE state.
         this.emit(':ask', 'Hello, I am your trainer. You have done ' + 
             this.attributes['exercisesDone'].toString() + ' exercises. Would you like to do some push-ups?',
             'Would you like to do some push-ups?');
     },
-    'GetName': function() {
+    'GetNameIntent': function() {
         this.handler.state = states.STARTMODE; // Transition to STARTMODE state.
-        this.emit(':ask', 'What is your name?', 'I asked, what is your name?')
+        this.emit(':ask', 'What is your name?', 'I asked, what is your name?');
     }
 };
 
@@ -48,7 +48,7 @@ var startSessionHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
         this.emit(':ask', 'Hello, I am your trainer. You have done ' + 
             this.attributes['exercisesDone'].toString() + ' exercises. Would you like to do some push-ups?',
             'Would you like to do some push-ups?');
-    }
+    },
     'NewSession': function () {
         this.emit('NewSession'); // Uses the handler in newSessionHandlers
     },
