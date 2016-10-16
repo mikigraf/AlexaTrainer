@@ -1,1 +1,3 @@
-Check out http://shopify.github.com/dashing for more information.
+## Dashboard for Alexa: your personal trainer
+
+used https://github.com/Shopify/dashing 
