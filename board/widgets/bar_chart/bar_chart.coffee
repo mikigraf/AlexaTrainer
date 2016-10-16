@@ -35,7 +35,7 @@ class Dashing.BarChart extends Dashing.Widget
         responsive: true
         maintainAspectRatio: true
         legend: {
-          display: true
+          display: false
         }
       }, @get('options'))
     });
