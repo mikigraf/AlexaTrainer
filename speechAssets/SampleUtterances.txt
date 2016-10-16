@@ -14,7 +14,6 @@ JustYesIntent okay fine
 
 YesMaamIntent yes ma'am
 
-StopExerciseIntent stop
 StopExerciseIntent I can't do any more
 StopExerciseIntent I can't take it anymore
 StopExerciseIntent I'm too tired

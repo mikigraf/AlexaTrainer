@@ -9,6 +9,17 @@ var APP_ID = "amzn1.ask.skill.d185bd2f-dbed-483d-b14b-d60b21e49de5";
  * Import the library for Node.js Alexa SDK into an `Alexa` object
  */
 var Alexa = require('alexa-sdk');
+var http = require("http");
+var options = {
+  hostname: 'alexa-trainer.herokuapp.com',
+  port: 80,
+  path: '/test',
+  method: 'POST',
+  headers: {
+      'Content-Type': 'application/json',
+  }
+};
+
 
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
@@ -27,28 +38,18 @@ var newSessionHandlers = {
      // This will short-cut any incoming intent or launch requests and route them to this handler.
     'NewSession': function() {
         this.attributes['exercisesDone'] = 0;
-        this.attributes['totalExercisesDone'] = ''; // weirdly hacked tgt string of all exercise counts e.g. "P9S2B4"
-        if(Object.keys(this.attributes).length === 0) { // Check if it's the first time the skill has been invoked
-            this.emit('GetNameIntent');
-        }
+        this.attributes['totalRepsDone'] = 0; // weirdly hacked tgt string of all exercise counts e.g. "P9S2B4"
         this.handler.state = states.STARTMODE; // Transition to STARTMODE state.
+
+        var exercisesNoun = this.attributes['exercisesDone'] != 1 ? "exercises" : "exercise";
+
         this.emit(':ask', 'Hello, I am your trainer. You have done ' + 
-            this.attributes['exercisesDone'].toString() + ' exercises. Would you like to do some push-ups?',
+            this.attributes['exercisesDone'].toString() + ' ' + exercisesNoun + '. Would you like to do some push-ups?',
             'Would you like to do some push-ups?');
-    },
-    'GetNameIntent': function() {
-        this.handler.state = states.STARTMODE; // Transition to STARTMODE state.
-        this.emit(':ask', 'What is your name?', 'I asked, what is your name?');
     }
 };
 
-
 var startSessionHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
-    'SayNameIntent': function() {
-        this.emit(':ask', 'Hello, I am your trainer. You have done ' + 
-            this.attributes['exercisesDone'].toString() + ' exercises. Would you like to do some push-ups?',
-            'Would you like to do some push-ups?');
-    },
     'NewSession': function () {
         this.emit('NewSession'); // Uses the handler in newSessionHandlers
     },
@@ -58,7 +59,7 @@ var startSessionHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
         this.emit(':ask', message, message);
     },
     'JustYesIntent': function() {
-        this.emit(':ask', "Yes ma'am.", "I expect you to reply with yes, ma'am.");
+        this.emit(':ask', "Yes what?", "I expect you to reply with yes, ma'am.");
     },
     'YesMaamIntent': function() {
         this.handler.state = states.EXERCISEMODE;
@@ -69,16 +70,57 @@ var startSessionHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
         this.emit(':ask', 'Do it for Harambe.', 'You should do it for Harambe.');
     },
     'ReallyNoIntent': function() {
-        this.emit('SessionEndedRequest');
+        var pushups_count = this.attributes['totalRepsDone'];
+        var req = http.request(options, function(res) {
+          console.log('Status: ' + res.statusCode);
+          console.log('Headers: ' + JSON.stringify(res.headers));
+          res.setEncoding('utf8');
+          res.on('data', function (body) {
+            console.log('Body: ' + body);
+          });
+        });
+        req.on('error', function(e) {
+          console.log('problem with request: ' + e.message);
+        });
+        // write data to request body
+        req.write('{"date": "Sunday", "pushUps":' + pushups_count + ' }');
+        req.end();
+        this.emit(':tell', 'Your workout has ended. Good-bye.');
     },
     'AMAZON.CancelIntent': function() {
-        this.emit('SessionEndedRequest');
+        var pushups_count = this.attributes['totalRepsDone'];
+        var req = http.request(options, function(res) {
+          console.log('Status: ' + res.statusCode);
+          console.log('Headers: ' + JSON.stringify(res.headers));
+          res.setEncoding('utf8');
+          res.on('data', function (body) {
+            console.log('Body: ' + body);
+          });
+        });
+        req.on('error', function(e) {
+          console.log('problem with request: ' + e.message);
+        });
+        // write data to request body
+        req.write('{"date": "Sunday", "pushUps":' + pushups_count + ' }');
+        req.end();
+        this.emit(':tell', 'Your workout has ended. Good-bye.');
     },
     'AMAZON.StopIntent': function() {
-        this.emit('SessionEndedRequest');
-    },
-    'SessionEndedRequest': function () {
-        console.log('session ended!');
+        var pushups_count = this.attributes['totalRepsDone'];
+        var req = http.request(options, function(res) {
+          console.log('Status: ' + res.statusCode);
+          console.log('Headers: ' + JSON.stringify(res.headers));
+          res.setEncoding('utf8');
+          res.on('data', function (body) {
+            console.log('Body: ' + body);
+          });
+        });
+        req.on('error', function(e) {
+          console.log('problem with request: ' + e.message);
+        });
+        // write data to request body
+        req.write('{"date": "Sunday", "pushUps":' + pushups_count + ' }');
+        req.end();
         this.emit(':tell', 'Your workout has ended. Good-bye.');
     },
     'Unhandled': function() {
@@ -97,16 +139,22 @@ var exerciseHandlers = Alexa.CreateStateHandler(states.EXERCISEMODE, {
     'IncrementRepsIntent': function() {
         this.attributes['repsDone'] += 1;
         var repCount = this.attributes['repsDone'];
-        this.emit(':ask', repCount.toString(), 'Repeat after me.' + repCount.toString());
+        if (repCount > 3) {
+            this.emit(':ask', "Another one.", "Another one.");
+        } else {
+            this.emit(':ask', repCount.toString(), 'Repeat after me.' + repCount.toString());
+        }
     },
     'StopExerciseIntent': function() {
+        this.attributes['repsDone'] -= 1;
         var repCount = this.attributes['repsDone'];
         this.attributes['exercisesDone'] += 1;
+        this.attributes['totalRepsDone'] += repCount;
         this.handler.state = states.STARTMODE;
-        this.emit(':ask', 'You have done ' + repCount.toString() + 'push-ups. Do you want to do another exercise?', 'Do you want to do another exercise?');
+        this.emit(':ask', 'You have done ' + repCount.toString() + ' push-ups. Do you want to do another exercise?', 'Do you want to do another exercise?');
     },
     'Unhandled': function() {
-        var message = 'Do you want to continue this exercise?';
+        var message = 'Repeat after me.';
         this.emit(':ask', message, message);
     }
 });
