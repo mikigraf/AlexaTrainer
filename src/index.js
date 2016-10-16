@@ -63,10 +63,10 @@ var startSessionHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
     'YesMaamIntent': function() {
         this.handler.state = states.EXERCISEMODE;
         this.attributes['repsDone'] = 1;
-        this.emit(':ask', 'Good. Get into position. <break time="5s"/> Repeat after me. One.', 'Try saying a number.');
+        this.emit(':ask', 'Good. Get into position. <break time="5s"/> Repeat after me. One.', 'Repeat after me. One.');
     },
     'AMAZON.NoIntent': function() {
-        this.emit(':ask', 'Do it for Harambe.');
+        this.emit(':ask', 'Do it for Harambe.', 'You should do it for Harambe.');
     },
     'ReallyNoIntent': function() {
         this.emit('SessionEndedRequest');
